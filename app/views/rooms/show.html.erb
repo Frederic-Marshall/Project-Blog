@@ -1,0 +1,55 @@
+<h1><%= @room.name %></h1>
+
+<div class="row">
+	<%= render 'rooms' %>
+
+	<div class="col-9">
+		<div class="chat">
+      <% @room_messages.each do |room_message| %>
+        <div class="chat-message-container">
+          <div class="row">
+						<div class="col-md-2 text-center">
+							<% if room_message.user.avatar.present? %>
+								<%= image_tag(room_message.user.avatar_thumbnail, class: "rounded-circle avatar-message") %>
+							<% else %>
+								<%= image_tag("default_profile.png", class: "rounded-circle avatar-message") %>
+							<% end %>
+            </div>
+
+            <div class="col">
+              <div class="message-content">
+								<time class="time float-end">
+                  <small>
+                    <%= room_message.created_at %>
+                  </small>
+                </time>
+								
+                <p class="mb-1 message-text">
+                  <%= room_message.message %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+		<%= form_for @room_message, remote: true do |form| %>
+			<div class="chat-input form-floating mt-3">
+				<%= form.text_field :message, as: :string,
+																	wrapper: false,
+																	class: 'form-control' %>
+				
+				<div class="form-group mt-4">
+					<%= form.submit t(".submits.Send"), class: 'btn btn-primary' %>
+				</div>
+			</div>
+
+			<div class="form-group mt-3">
+				<%= form.text_field :room_id, class: "form-control-plaintext" %>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+<%= javascript_include_tag("room.js") %>

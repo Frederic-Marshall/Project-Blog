@@ -1,0 +1,53 @@
+.dropdown
+	position: relative 
+	right: 0 
+	*
+		box-sizing: border-box
+.select
+	cursor: pointer
+	color: black
+	background-color: #c9c9c9
+	color:black
+	display: flex
+	justify-content: space-between
+	align-items: center
+	border: 1px solid black
+	border-radius: .5em
+	padding: .4em .8em
+.select-clicked
+	border: 1px solid #808080
+	box-shadow: 0 0 .8em #26489a
+.select:hover
+	background: #dad8d8
+.menu
+	list-style: none
+	padding: .4em .8em
+	background-color: #585858
+	border: 1px solid black
+	border-radius: .7em
+	position: absolute
+	transform: translateX(-50%)
+	opacity: 0
+	display: none
+	z-index: 3
+	a
+		color: white
+		text-decoration: none
+.menu
+	li
+		display: flex
+		justify-content: center
+		padding: .3em .5em
+		border-radius: .5em
+		cursor: pointer
+	li:hover
+		background-color: #6d6d6d
+.actived
+	background-color: #6e6e6e
+.menu-open
+	display: block
+	opacity: 1
+.buttons_to
+	background: none
+	border: none
+	color: white

@@ -1,0 +1,32 @@
+<div class="col-12 mb-3 pb-3 rooms-header">
+	<%= link_to t(".Create"), new_room_path, class: "btn btn-primary"%>
+</div>
+
+<div class="col-3 rooms-list">
+	<% if @rooms.present? %>
+		<nav class="room-nav flex-column">
+			<% @rooms.each do |room| %>
+				<div class="room-nav-link">
+					<div class="row">
+						<div class="col">
+							<%= link_to room.name, room_path(room), class: "nav-link" %>
+						</div>
+
+						<div class="col-1">
+							<% if user_signed_in? && current_user.admin? %>
+								<%= button_to fa_icon('trash-o'), room_path(room), 
+									method: :delete, 
+									title:'Delete room', 
+									class: "nav-link #{cookies[:theme]}" %>
+							<% end %>
+						</div>
+					</div>
+					
+					
+				</div>
+			<% end %>
+		</nav>
+	<% else %>
+		The are no rooms
+	<% end %>
+</div>

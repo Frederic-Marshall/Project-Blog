@@ -1,0 +1,60 @@
+<nav class="navbar navbar-expand-lg bg-<%= cookies[:theme] %>">
+  <div class="container-fluid">
+    <a class="navbar-brand <%= cookies[:theme] %>" href="<%= posts_path %>">Mister 118</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <div class="dropdown">
+					<div class="select">
+						<span class="selected">
+							<%= fa_icon "solid bars" %>
+						</span>
+					</div>
+
+					<ul class="menu">
+						<% if user_signed_in? %>
+							<li>
+								<%= link_to user_path(current_user), class: "mx-1" do %>
+									<%= t(".Profile") %>
+								<% end %>
+							</li>
+
+							<li>
+								<%= link_to rooms_path, class: "mx-1" do %>
+									<%= t(".Messages") %>
+								<% end %>
+							</li>
+						<% else %>
+							<li class="nav-item">
+								<%= link_to t('.LogIn'), new_user_session_path, 
+									class: "mx-1" %>
+							</li>
+
+							<li class="nav-item">
+								<%= link_to t('.SignIn'), new_user_registration_path, 
+									class: "mx-1" %>
+							</li>
+						<% end %>
+
+						<li>
+							<%= link_to "Русский", { locale: :ru }, 
+            		class: "mx-1" %>
+						</li>
+
+						<li class="active">
+							<%= link_to "English", { locale: :en }, 
+            		class: "mx-1" %>
+						</li>
+
+						<li>
+							<div class='inline'>
+								<%= link_to t('.light'), set_theme_path(theme: 'light'), class: "nav-link #{ cookies[:theme]}" %>
+								<%= link_to t('.dark'), set_theme_path(theme: 'dark'), class: "nav-link #{ cookies[:theme]}" %>
+							</div>
+						</li>
+					</ul>
+				</div>
+      </ul>
+    </div>
+  </div>
+</nav>
+<%= javascript_include_tag("header_menus.js") %>

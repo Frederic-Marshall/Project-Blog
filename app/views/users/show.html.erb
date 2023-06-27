@@ -1,0 +1,93 @@
+<div class="user-head">
+	<% if @user.avatar.present? %>
+		<%= image_tag(@user.avatar_thumbnail, class: "rounded-circle") %>
+	<% else %>
+		<%= image_tag("default_profile.png", height: 300, width: 300, class: "rounded-circle") %>
+	<% end %>
+</div>
+
+<div class="user-body">
+	<div class="user-body-container">
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-6 col-sm-3">
+					<p class="text-muted">Email: </p>
+				</div>
+
+				<div class="col-6 col-sm-3">
+					<p style="color: black;"><%= @user.email %></p>
+				</div>
+
+				<div class="w-100"></div>
+
+				<div class="col-6 col-sm-3">
+					<p class="text-muted"><%= t(".Roles") %>: </p>
+				</div>
+
+				<div class="col-6 inline col-sm-3">
+					<p class="bg-primary fs">User</p>
+
+					<% if @user.admin? %>
+						<p class="bg-danger fs">Admin</p>
+
+						<%= content_tag(:p, 
+							"Moderator", 
+							class: "fs bg-danger") if @user.moderatior? %>
+					<% end %>
+				</div>
+			</div>
+		</div>
+		<div>
+			<% if current_user == @user %>
+				<div class="inline">
+					<%= link_to t(".buttons.Edit"), edit_registration_path(@user), class: "btn btn-primary button" %>
+					<%= button_to t('.buttons.Exit'), destroy_user_session_path, method: :delete,
+																																		 	 class: "btn btn-danger button" %>
+				</div>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<div class="user-posts">
+	<div class="user-posts-all">
+		<%= link_to t('.buttons.Posts'), root_path, class: 'btn btn-primary' %>
+	</div>
+
+	<div class="user-post-author">
+		<% @user_posts.each do |post| %>
+			<article class="post">
+				<section class="post-head">
+					<h2><%= link_to post.title, post_path(post), class: "#{cookies[:theme]}" %></h2>
+					<small>
+						<div class="inline my-2">
+							<time><%= post.created_at.to_date.strftime("%d %B, %Y") %></time>
+							<% if post.category.present? %>
+								|
+								<%= link_to post.category.name, post.category, class: "links #{cookies[:theme]}"  %>
+							<% end %>
+							
+							<% if current_user == @user && current_user.admin? %>
+								|
+								<%= link_to t('.edit'), edit_admin_post_path(post), class: "links #{cookies[:theme]}" %>
+								|
+								<%= button_to t('.delete'), admin_post_path(post), method: :delete,
+																																	 form: {data: {turbo_confirm: "Вы уверены?"}}, 
+																																	 class: "links #{cookies[:theme]}" %>
+							<% end %>
+						</div>
+					</small>
+				</section>
+
+				<section class="post-summary clearfix">
+					<%= image_tag post.image.url(:thumb), class: 'img-thumbnail thumb' if post.image? %>
+					<%= post.summary %>
+				</section>
+
+				<section class="footer-summary">
+					<%= raw post.tags.map(&:name).map{ |t| link_to t, tag_path(t), class: 'tag tag-pill tag-primary' }.join(' ') %>
+				</section>
+			</article>
+		<% end %>
+	</div>
+</div>
